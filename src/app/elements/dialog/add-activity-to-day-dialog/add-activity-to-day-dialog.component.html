@@ -1,0 +1,363 @@
+<h2 md-dialog-title>Edit Activity</h2>
+<form id="activityOverview" class="css-form" #f="ngForm" (ngSubmit)="onSubmit()">
+	<md-dialog-content>
+
+		<md-tab-group>
+			<md-tab label="Activity">
+				<div class="add-activity-to-date-dialog-content">
+					<div class="row">
+						<div class="col-md-6 col-sm-12 trip-input">
+
+							<md-input-container class="input-full-width">
+								<input mdInput placeholder="Title" [required]="true" name="title" [(ngModel)]="activity.title">
+							</md-input-container>
+
+						</div>
+
+						<div class="col-md-6 col-sm-12 trip-input">
+							<md-select placeholder="Type" name="type_slug" [(ngModel)]="activity.type_slug" class="input-full-width"
+												 [required]="true">
+								<md-option *ngFor="let activityType of activityTypes" [value]="activityType.slug">
+									{{ activityType.title }}
+								</md-option>
+							</md-select>
+
+						</div>
+
+
+					</div>
+
+					<div class="row">
+						<div id="datetimepicker2" class="input-append">
+							<div class="col-md-6 col-sm-6 trip-input">
+								<label>Start</label>
+								<my-date-picker class="date-select-picker" [options]="dateOptions"
+																(dateChanged)="onSelectStartDate($event)"
+																[selDate]="activity.start | date: 'y-MM-dd'"></my-date-picker>
+								<div class="form-group">
+									<label>Time</label>
+									<timepicker [(ngModel)]="startTime" [ngModelOptions]="{standalone: true}"></timepicker>
+								</div>
+							</div>
+
+							<div class="col-md-6 col-sm-6 trip-input">
+								<label>End</label>
+								<my-date-picker class="date-select-picker" [options]="dateOptions"
+																(dateChanged)="onSelectEndDate($event)"
+																[selDate]="activity.end | date: 'y-MM-dd'"></my-date-picker>
+								<div class="form-group">
+									<label>Time</label>
+									<timepicker [(ngModel)]="endTime" [ngModelOptions]="{standalone: true}"></timepicker>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 col-sm-12 trip-input">
+							<app-autocomplete (onKeyup)="onFromLocationKeyUp($event)" (onSelect)="onSelectFromLocation($event)"
+																[placeholder]="'From'"
+																[dropdown]="fromLocations" [value]="activity.from"></app-autocomplete>
+						</div>
+
+						<div class="col-md-6 col-sm-12 trip-input">
+							<app-autocomplete (onKeyup)="onEndLocationKeyUp($event)" (onSelect)="onSelectEndLocation($event)"
+																[placeholder]="'To'"
+																[dropdown]="endLocations" [value]="activity.to"></app-autocomplete>
+						</div>
+
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 col-sm-12 trip-input">
+							<md-input-container class="input-full-width">
+								<input mdInput placeholder="Reference number" name="reference_number"
+											 [(ngModel)]="activity.reference_number">
+							</md-input-container>
+						</div>
+
+						<div class="col-md-6 col-sm-12 trip-input">
+							<md-input-container class="input-full-width">
+								<input mdInput placeholder="Provider" name="provider" [(ngModel)]="activity.provider">
+							</md-input-container>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 col-sm-12 trip-input">
+							<md-input-container class="input-full-width">
+								<input mdInput placeholder="Website" name="website" [(ngModel)]="activity.website">
+							</md-input-container>
+						</div>
+
+						<div class="col-md-6 col-sm-12 trip-input">
+							<md-input-container class="input-full-width">
+								<input mdInput placeholder="Contact number" name="contact_number"
+											 [(ngModel)]="activity.contact_number">
+							</md-input-container>
+						</div>
+					</div>
+
+
+					<div class="row">
+
+						<div class="col-md-12 col-sm-12 trip-input">
+							<md-input-container class="input-full-width">
+								<input mdInput placeholder="Meeting point" name="meeting_point" [(ngModel)]="activity.meeting_point"
+											 [required]="true">
+							</md-input-container>
+							<md-input-container class="input-full-width">
+								<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.notes"></textarea>
+							</md-input-container>
+							<md-input-container class="input-full-width">
+								<textarea mdInput placeholder="Description" name="description"
+													[(ngModel)]="activity.description"></textarea>
+							</md-input-container>
+						</div>
+
+
+					</div>
+
+
+				</div>
+			</md-tab>
+			<md-tab label="Muti-Languages">
+
+				<p>
+					<small>You can now add Activity Content translations in Languages that the SafeTravels app supports. This is
+						great
+						for
+						trips where you might have customers who speak different languages. The Activity content will be displayed
+						to
+						the user in the app based on the language they have selected in the app. Note: If you leave these fields
+						empty,
+						the customer will be shown the English translation by default
+					</small>
+				</p>
+				<div class="multi-lang-content">
+					<div class="well">
+						<div class="trip-input">
+							<md-button-toggle-group #language="mdButtonToggleGroup" (change)="onLanguageChange($event)">
+								<md-button-toggle value="en" [checked]="true">
+									En
+								</md-button-toggle>
+								<md-button-toggle value="fr">
+									FR
+								</md-button-toggle>
+								<md-button-toggle value="de">
+									DE
+								</md-button-toggle>
+								<md-button-toggle value="es">
+									ES
+								</md-button-toggle>
+								<md-button-toggle value="it">
+									IT
+								</md-button-toggle>
+								<md-button-toggle value="zh">
+									ZH
+								</md-button-toggle>
+								<md-button-toggle value="ja">
+									JA
+								</md-button-toggle>
+							</md-button-toggle-group>
+							<div [ngSwitch]="language.value">
+								<div *ngSwitchCase="'en'">
+									<div class="trip-input">
+										<md-input-container>
+											<input mdInput placeholder="Title" name="title" [(ngModel)]="activity.en.title">
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.en.notes"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Description" name="description"
+																[(ngModel)]="activity.en.description"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Meeting Point" name="meeting_point"
+																[(ngModel)]="activity.en.meeting_point"></textarea>
+										</md-input-container>
+									</div>
+								</div>
+
+								<div *ngSwitchCase="'fr'">
+									<div class="trip-input">
+										<md-input-container>
+											<input mdInput placeholder="Title" name="title" [(ngModel)]="activity.fr.title">
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.fr.notes"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Description" name="description"
+																[(ngModel)]="activity.fr.description"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Meeting Point" name="meeting_point"
+																[(ngModel)]="activity.fr.meeting_point"></textarea>
+										</md-input-container>
+									</div>
+								</div>
+
+
+								<div *ngSwitchCase="'de'">
+									<div class="trip-input">
+										<md-input-container>
+											<input mdInput placeholder="Title" name="title" [(ngModel)]="activity.de.title">
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.de.notes"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Description" name="description"
+																[(ngModel)]="activity.de.description"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Meeting Point" name="meeting_point"
+																[(ngModel)]="activity.de.meeting_point"></textarea>
+										</md-input-container>
+									</div>
+								</div>
+
+
+								<div *ngSwitchCase="'es'">
+									<div class="trip-input">
+										<md-input-container>
+											<input mdInput placeholder="Title" name="title" [(ngModel)]="activity.es.title">
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.es.notes"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Description" name="description"
+																[(ngModel)]="activity.es.description"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Meeting Point" name="meeting_point"
+																[(ngModel)]="activity.es.meeting_point"></textarea>
+										</md-input-container>
+									</div>
+								</div>
+
+
+								<div *ngSwitchCase="'it'">
+									<div class="trip-input">
+										<md-input-container>
+											<input mdInput placeholder="Title" name="title" [(ngModel)]="activity.it.title">
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.it.notes"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Description" name="description"
+																[(ngModel)]="activity.it.description"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Meeting Point" name="meeting_point"
+																[(ngModel)]="activity.it.meeting_point"></textarea>
+										</md-input-container>
+									</div>
+								</div>
+
+
+								<div *ngSwitchCase="'zh'">
+									<div class="trip-input">
+										<md-input-container>
+											<input mdInput placeholder="Title" name="title" [(ngModel)]="activity.zh.title">
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.zh.notes"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Description" name="description"
+																[(ngModel)]="activity.zh.description"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Meeting Point" name="meeting_point"
+																[(ngModel)]="activity.zh.meeting_point"></textarea>
+										</md-input-container>
+									</div>
+								</div>
+
+
+								<div *ngSwitchCase="'ja'">
+									<div class="trip-input">
+										<md-input-container>
+											<input mdInput placeholder="Title" name="title" [(ngModel)]="activity.ja.title">
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Notes" name="notes" [(ngModel)]="activity.ja.notes"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Description" name="description"
+																[(ngModel)]="activity.ja.description"></textarea>
+										</md-input-container>
+									</div>
+									<div class="trip-input">
+										<md-input-container>
+											<textarea mdInput placeholder="Meeting Point" name="meeting_point"
+																[(ngModel)]="activity.ja.meeting_point"></textarea>
+										</md-input-container>
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</md-tab>
+		</md-tab-group>
+
+
+	</md-dialog-content>
+
+
+	<md-dialog-actions>
+		<button type="button" class="btn btn-sm" md-dialog-close>Close</button>
+		<button type="submit" class="btn btn-sm btn-success">Save changes</button>
+	</md-dialog-actions>
+</form>

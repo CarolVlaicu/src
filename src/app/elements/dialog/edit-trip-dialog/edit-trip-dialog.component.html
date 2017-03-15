@@ -1,0 +1,104 @@
+<h2 md-dialog-title>{{title}}</h2>
+
+<md-dialog-content>
+	<form #f="ngForm">
+		<div class="edit-trip-dialog-content">
+
+			<div class="form-group-control">
+				<md-input-container class="input-full-width">
+					<input mdInput placeholder="Trip Title" [(ngModel)]="trip.title" name="title" type="text"
+								 [required]="true">
+				</md-input-container>
+			</div>
+			<div class="form-group-control">
+				<app-autocomplete (onKeyup)="onLocationKeyUp($event)" (onSelect)="onTripLocationSelect($event)"
+													[placeholder]="'Location'"
+													[dropdown]="locations" [value]="trip.start_location"></app-autocomplete>
+			</div>
+			<div class="form-group-control">
+				<div class="row">
+					<div class="col-md-12">
+						<label>Start Date*</label>
+					</div>
+					<div class="col-md-12">
+						<my-date-picker [selDate]="trip.start_date" class="date-select-picker" [options]="dateOptions"
+														(dateChanged)="onSelectStartDate($event)"></my-date-picker>
+					</div>
+				</div>
+
+			</div>
+			<div class="form-group-control">
+				<div class="row">
+					<div class="col-md-12">
+						<label>End Date*</label>
+					</div>
+					<div class="col-md-12">
+						<my-date-picker [selDate]="trip.end_date" class="date-select-picker" [options]="dateOptions"
+														(dateChanged)="onSelectEndDate($event)"></my-date-picker>
+					</div>
+				</div>
+			</div>
+			<div class="row trip-block-row">
+
+				<div class="col-lg-6 col-md-12">
+					<div class="select-admin-account">
+						<md-select class="input-full-width" placeholder="Trip Admin" [(ngModel)]="trip.admin_id"
+											 name="business-admin" [required]="true">
+							<md-option *ngFor="let admin of admins" [value]="admin.id">
+								{{admin.first_name + ' ' + admin.last_name}}
+							</md-option>
+						</md-select>
+					</div>
+				</div>
+
+				<div class="col-lg-6 col-md-12">
+					<div class="select-admin-account">
+						<md-select class="input-full-width" placeholder="Trip Guide" [(ngModel)]="trip.guide_id"
+											 name="business-guide" [required]="true">
+							<md-option *ngFor="let user of guides" [value]="user.id">
+								{{user.first_name + ' ' + user.last_name}}
+							</md-option>
+						</md-select>
+					</div>
+				</div>
+
+
+			</div>
+
+			<div class="form-group-control">
+				<div class="row">
+					<div class="col-md-12">
+						<md-slide-toggle
+								class="example-margin"
+								[color]="'primary'"
+								[checked]="trip.admin_chat_enabled" (change)="admin_chat_enabled($event)">
+							Enable chat with admin
+						</md-slide-toggle>
+					</div>
+					<div class="col-md-12">
+						<md-slide-toggle
+								class="example-margin"
+								[color]="'primary'"
+								[checked]="trip.guide_chat_enabled" (change)="guide_chat_enabled($event)">
+							Enable chat with tour guide
+						</md-slide-toggle>
+
+					</div>
+					<div class="col-md-12">
+						<md-slide-toggle
+								class="example-margin"
+								[color]="'primary'"
+								[checked]="trip.group_chat_enabled" (change)="group_chat_enabled($event)">
+							Enable group chat
+						</md-slide-toggle>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</form>
+</md-dialog-content>
+<md-dialog-actions>
+	<button class="btn btn-sm" md-dialog-close>Close</button>
+	<button class="btn btn-sm btn-success" (click)="onSave()">Save changes</button>
+</md-dialog-actions>

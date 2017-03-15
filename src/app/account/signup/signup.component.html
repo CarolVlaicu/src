@@ -1,0 +1,77 @@
+<div class="col-md-offset-3 col-md-6">
+  <div class="row login-container">
+    <div class="logo">
+      <img [src]="'assets/images/SafeTravels/safetravels_logo_transparent.png'" alt="SafeTravels Logo" width="300">
+    </div>
+
+    <md-card class="login-form-container">
+
+      <md-card-header>
+        <md-card-title><h3>Travel Company Sign Up</h3></md-card-title>
+      </md-card-header>
+
+      <md-card-content>
+        <form #f="ngForm" method="post" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <md-input-container class="w100">
+              <input mdInput name="business_name" [(ngModel)]="user.business_name" type="text" placeholder="Travel Company Name" [type]="'text'">
+            </md-input-container>
+          </div>
+
+          <h5>Contact Person</h5>
+
+          <div class="form-group">
+            <md-input-container class="w100">
+              <input mdInput name="first_name" [(ngModel)]="user.first_name" type="text" placeholder="First Name"
+                     [type]="'text'" [required]="true">
+            </md-input-container>
+          </div>
+
+          <div class="form-group">
+            <md-input-container class="w100">
+              <input mdInput name="last_name" [(ngModel)]="user.last_name" type="text" placeholder="Last Name"
+                     [type]="'text'" [required]="true">
+            </md-input-container>
+          </div>
+
+          <div class="form-group">
+            <md-input-container class="w100">
+              <input mdInput name="email" [(ngModel)]="user.email" type="email"  placeholder="Email address"
+                     [type]="'email'" [required]="true">
+            </md-input-container>
+          </div>
+
+          <div class="form-group">
+            <md-input-container class="w100">
+              <input name="password" [(ngModel)]="user.password" type="password" mdInput placeholder="Password" [type]="'password'" [required]="true">
+            </md-input-container>
+          </div>
+
+          <div class="form-group">
+            <md-input-container class="w100">
+              <input name="password_confirmation" type="password" [(ngModel)]="user.password_confirmation" mdInput
+                     placeholder="Confirm Password" [type]="'password'" [required]="true">
+            </md-input-container>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-12">
+              <md-checkbox name="agreeTermConditions" [(ngModel)]="agreeTermConditions" [color]="'primary'">I Agree to
+                <button type="button" class="btn btn-link" (click)="openTermsDialog()">Terms & Conditions</button>
+                and
+                <button type="button" (click)="openPrivacyDialog()" class="btn btn-link">Privacy Policy</button>
+              </md-checkbox>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-purple btn-block">Sign Up</button>
+            <p>Already a member? <a routerLink="/login">Sign In</a></p>
+          </div>
+        </form>
+      </md-card-content>
+
+    </md-card>
+  </div>
+</div>
